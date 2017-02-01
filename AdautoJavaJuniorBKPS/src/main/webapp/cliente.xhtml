@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+	<h:head>
+		<title>Sistema BKPS</title>
+		<h:outputStylesheet library="css" name="style.css" />
+	</h:head>
+	
+	<h:body>
+		<div id="cabecalho">
+			<h:graphicImage library="imagens" name="logo.png" id="logoCompania" />
+		</div>
+			
+		<div>
+			<h:form>
+				<h:inputHidden value="#{clienteBean.cliente.id}" />
+				<h2>
+					<h:outputText value="Novo Cliente" rendered="#{empty clienteBean.cliente.id}" />
+					<h:outputText value="Alterar Cliente" rendered="#{not empty clienteBean.cliente.id}" />
+				</h2>
+				
+				<h:messages id="mensagens"/>
+				
+				
+				<fieldset>
+					<legend>Dados do Cliente</legend>
+					
+					<h:outputLabel value="Nome:" for="nome" />
+					<h:inputText id="nome" value="#{clienteBean.cliente.nome}" size="70" maxlength="65"
+					 			 required="true" requiredMessage="O Nome do cliente é obrigatório!"/>
+					
+					<h:outputLabel value="Telefone:" for="telefone" />
+					<h:inputText id="telefone" value="#{clienteBean.cliente.telefone}" size="15" maxlength="16" />
+					
+					<h:outputLabel value="Endereço:" for="endereco" />
+					<h:inputText id="endereco" value="#{clienteBean.cliente.endereco}" size="90" maxlength="80"
+								 required="true" requiredMessage="O Endereço do cliente é obrigatório!"/>
+					
+					<h:outputLabel value="Observações:" for="observacoes" />
+					<h:inputText id="observacoes" value="#{clienteBean.cliente.observacoes}" size="100" maxlength="100"/>
+					
+					<h:commandButton value="Gravar" action="#{clienteBean.grava}"/>		
+				</fieldset>
+			</h:form>
+		</div>
+		<div>	
+			<h2>Listagem de Clientes</h2>
+			<h:form>
+				<h:dataTable value="#{clienteBean.clientes}" var="cliente"
+							 styleClass="dados" rowClasses="impar,par">
+					<h:column>
+						<f:facet name="header">Nome</f:facet>
+						#{cliente.nome}
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Telefone</f:facet>
+						#{cliente.telefone}
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Endereço</f:facet>
+						#{cliente.endereco}
+					</h:column>
+					
+					<h:column>
+						<f:facet name="header">Observações</f:facet>
+						#{cliente.observacoes}
+					</h:column>
+
+					<h:column>
+						<f:facet name="header">Ações</f:facet>
+						<h:commandLink action="#{clienteBean.remove(cliente)}" value="Remover" style="color:red"
+									   onclick="if(!confirm('Confirma a exclusão deste Cliente?')) return false;">
+							<f:ajax render="@form" />
+						</h:commandLink>
+						&nbsp;
+						<h:commandLink value="Alterar" style="color:blue">
+							<f:setPropertyActionListener value="#{cliente}" target="#{clienteBean.cliente}" />
+						</h:commandLink>
+					</h:column>
+				</h:dataTable>
+			</h:form>
+		</div>	
+		<div id="rodape">
+			Copyright 2017
+			Todos os direitos reservados
+		</div>
+	</h:body>
+</html>
